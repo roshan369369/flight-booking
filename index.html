@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airport Passenger Boarding System</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-icon">✈</span><span>SkyBoard<span class="brand-light">.OS</span></span></a>
+    <div class="topbar-right"><span class="live-dot"></span> BOARDING CONTROL <span class="top-divider"></span><span id="clock">--:--:--</span></div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">AIRPORT OPERATIONS / PASSENGER SERVICES</p>
+        <h1>Passenger<br /><span>Boarding System</span></h1>
+        <p class="hero-description">A simple, organised boarding workflow powered by Queue and Priority Queue data structures.</p>
+        <div class="hero-meta"><span>✦ DATA STRUCTURES PROJECT</span><span>JAVA CONCEPT DEMO</span></div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="plane">✈</div><div class="visual-label label-top">FLIGHT OPERATIONS</div>
+        <div class="visual-label label-bottom">QUEUE SYSTEM // ACTIVE</div>
+      </div>
+    </section>
+
+    <section class="flight-strip">
+      <div><span class="strip-label">FLIGHT</span><strong>SB 204</strong></div>
+      <div><span class="strip-label">DESTINATION</span><strong>KOCHI <span class="muted">/ COK</span></strong></div>
+      <div><span class="strip-label">GATE</span><strong>G-08</strong></div>
+      <div><span class="strip-label">STATUS</span><strong class="status"><span class="live-dot"></span> BOARDING READY</strong></div>
+    </section>
+
+    <section class="section-heading">
+      <div><p class="eyebrow">LIVE OVERVIEW</p><h2>Boarding dashboard</h2></div>
+      <button class="button button-quiet" id="resetBtn" type="button">↻ Reset demo</button>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card"><div class="stat-top"><span>Passengers waiting</span><span class="stat-icon">◷</span></div><strong id="totalWaiting">0</strong><small>Across both queues</small></article>
+      <article class="stat-card"><div class="stat-top"><span>Normal queue</span><span class="stat-icon">☷</span></div><strong id="normalCount">0</strong><small>FIFO · First in, first out</small></article>
+      <article class="stat-card"><div class="stat-top"><span>Priority queue</span><span class="stat-icon priority-icon">↟</span></div><strong id="priorityCount">0</strong><small>Lower number = higher priority</small></article>
+      <article class="stat-card"><div class="stat-top"><span>Boarded</span><span class="stat-icon boarded-icon">✓</span></div><strong id="boardedCount">0</strong><small>Passengers processed</small></article>
+    </section>
+
+    <section class="workspace">
+      <div class="panel add-panel">
+        <div class="panel-heading"><div><p class="eyebrow">PASSENGER ENTRY</p><h3>Add passenger</h3></div><span class="panel-symbol">＋</span></div>
+        <div class="tab-switch" role="tablist" aria-label="Passenger type">
+          <button class="tab active" data-tab="normal" type="button">Normal passenger</button>
+          <button class="tab" data-tab="priority" type="button">Priority passenger</button>
+        </div>
+        <form id="passengerForm">
+          <label for="passengerName">Passenger name</label>
+          <input id="passengerName" name="passengerName" placeholder="e.g. Alex Johnson" maxlength="50" required />
+          <label for="passengerId">Passenger / ticket ID</label>
+          <input id="passengerId" name="passengerId" placeholder="e.g. SB204-014" maxlength="20" required />
+          <div id="priorityField" class="hidden">
+            <label for="priorityValue">Priority value</label>
+            <select id="priorityValue" name="priorityValue">
+              <option value="1">1 — Highest priority</option>
+              <option value="2">2 — High priority</option>
+              <option value="3">3 — Standard priority</option>
+              <option value="4">4 — Lower priority</option>
+            </select>
+            <p class="field-hint">A smaller number is boarded before a larger number.</p>
+          </div>
+          <button class="button button-primary full-width" type="submit"><span>＋</span> Add to <span id="addQueueLabel">normal queue</span></button>
+        </form>
+        <div class="logic-note"><span class="logic-icon">i</span><p><strong>Boarding logic</strong><br />Priority passengers are selected first. If none are waiting, the next normal passenger boards.</p></div>
+      </div>
+
+      <div class="panel queue-panel">
+        <div class="panel-heading"><div><p class="eyebrow">WAITING AREA</p><h3>Passenger queues</h3></div><span class="queue-live"><span class="live-dot"></span> LIVE</span></div>
+        <div class="queue-section">
+          <div class="queue-title"><div><span class="queue-type-icon">☷</span><strong>Normal queue</strong><span class="pill">FIFO</span></div><span id="normalQueueLabel" class="queue-total">0 passengers</span></div>
+          <div id="normalList" class="passenger-list"><div class="empty-state">No passengers in the normal queue yet.</div></div>
+        </div>
+        <div class="queue-section priority-section">
+          <div class="queue-title"><div><span class="queue-type-icon priority-color">↟</span><strong>Priority queue</strong><span class="pill pill-priority">PRIORITY</span></div><span id="priorityQueueLabel" class="queue-total">0 passengers</span></div>
+          <div id="priorityList" class="passenger-list"><div class="empty-state">No priority passengers waiting.</div></div>
+        </div>
+        <div class="queue-footer"><span>Queue order updates automatically</span><span>● SYSTEM ACTIVE</span></div>
+      </div>
+    </section>
+
+    <section class="boarding-panel">
+      <div class="boarding-copy"><p class="eyebrow">NEXT IN LINE</p><h3>Ready to board?</h3><p id="nextDescription">Add passengers to see who will board next.</p></div>
+      <div class="next-passenger" id="nextPassenger"><span class="next-avatar">✈</span><div><small>NEXT PASSENGER</small><strong id="nextName">Awaiting passengers</strong><span id="nextDetail">No one in queue</span></div></div>
+      <button class="button button-board" id="boardBtn" type="button" disabled>Board next passenger <span>→</span></button>
+    </section>
+
+    <section class="history-panel panel">
+      <div class="panel-heading"><div><p class="eyebrow">RECENT ACTIVITY</p><h3>Boarding log</h3></div><span class="history-count" id="historyCount">0 records</span></div>
+      <div id="boardingHistory" class="history-list"><div class="empty-state">Boarded passengers will appear here.</div></div>
+    </section>
+
+    <footer><div class="footer-brand">✈ SKYBOARD.OS</div><p>Airport Passenger Boarding System · Queue &amp; Priority Queue demonstration</p><p class="student">Developed by <strong>Roshan Biju</strong> <span>·</span> Roll No. 45</p></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
